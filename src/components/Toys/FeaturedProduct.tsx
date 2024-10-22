@@ -23,7 +23,7 @@ const FeaturedProduct: React.FC<Props> = ({ data, start, limit }) => {
 
     return (
         <>
-            <div className="featured-product toys-kid md:pt-20 pt-10">
+            <div className="featured-product toys-kid bg-[#fff] md:pt-20 pt-10">
                 <div className="container relative">
                     <div className="content flex items-center justify-between max-sm:flex-col gap-8 bg-surface md:p-[60px] p-10 rounded-[28px]">
                         <div className="left bg-product sm:w-1/2">

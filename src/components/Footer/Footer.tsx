@@ -12,7 +12,7 @@ const Footer = () => {
                         <div className="content-footer py-[60px] flex justify-between flex-wrap gap-y-8">
                             <div className="company-infor basis-1/4 max-lg:basis-full pr-7">
                                 <Link href={'/'} className="logo">
-                                    <div className="heading4">BrandStore19</div>
+                                    <div className="heading4">ToeToys</div>
                                 </Link>
                                 <div className='flex gap-3 mt-3'>
                                     <div className="flex flex-col ">
@@ -20,7 +20,7 @@ const Footer = () => {
                                         <span className="text-button mt-3">Phone:</span>
                                     </div>
                                     <div className="flex flex-col ">
-                                        <span className=''>BrandStore1923@gmail.com</span>
+                                        <span className=''>ToeToys23@gmail.com</span>
                                         <span className='mt-3'>000-000-0000</span>
                                     </div>
                                 </div>

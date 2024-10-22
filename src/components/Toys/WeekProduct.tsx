@@ -23,7 +23,7 @@ const WeekProduct: React.FC<Props> = ({ data, start, limit }) => {
 
     return (
         <>
-            <div className="tab-features-block md:pt-20 pt-10">
+            <div className="tab-features-block bg-[#fff] md:pt-20 pt-10 pb-20">
                 <div className="container">
                     <div className="heading flex items-center justify-between gap-5 flex-wrap">
                         <div className="heading3">This week’s highlights</div>

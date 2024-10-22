@@ -80,7 +80,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                             <i className="icon-category text-2xl"></i>
                         </div>
                         <Link href={'/'} className='flex items-center lg:hidden'>
-                            <div className="heading4">BrandStore19</div>
+                            <div className="heading4">ToeToys</div>
                         </Link>
                         <div className="form-search relative max-lg:hidden z-[1]">
                             <Icon.MagnifyingGlass
@@ -706,7 +706,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                 </li>
                                 <li className='h-full flex items-center justify-center logo'>
                                     <Link href={'/'} className='heading4'>
-                                        BrandStore19
+                                        ToeToys
                                     </Link>
                                 </li>
                                 <li className='h-full'>
@@ -1009,7 +1009,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                 >
                                     <Icon.X size={14} />
                                 </div>
-                                <Link href={'/'} className='logo text-3xl font-semibold text-center'>BrandStore19</Link>
+                                <Link href={'/'} className='logo text-3xl font-semibold text-center'>ToeToys</Link>
                             </div>
                             <div className="form-search relative mt-2">
                                 <Icon.MagnifyingGlass size={20} className='absolute left-3 top-1/2 -translate-y-1/2 cursor-pointer' />

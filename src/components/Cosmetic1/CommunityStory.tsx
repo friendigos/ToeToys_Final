@@ -16,7 +16,7 @@ const CommunityStory = () => {
         <div className="community-story-block pt-10 bg-[#fff]">
             <div className="container">
                 <div className="heading3 text-center">Unboxing Stories</div>
-                <div className="mt-3 text-center" style={{fontWeight:"500",fontSize:"20px"}}>#BrandStore19</div>
+                <div className="mt-3 text-center" style={{fontWeight:"500",fontSize:"20px"}}>#ToeToys</div>
                 <div
                     className='list-product grid lg:grid-cols-4 md:grid-cols-3 grid-cols-2 md:gap-[30px] gap-[16px] md:mt-10 mt-6'>
                     <div className="product-item block h-full relative aspect-[3/4] md:rounded-2xl rounded-xl overflow-hidden cursor-pointer"

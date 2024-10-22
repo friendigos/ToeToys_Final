@@ -88,7 +88,7 @@ const TopNavThree: React.FC<Props> = ({ props }) => {
                             <Link href={'https://www.instagram.com/toe_toys?igsh=a2V4OXQ0dTVzbGZm'} target='_blank'>
                                 <i className="icon-instagram text-black"></i>
                             </Link>
-                            <Link href={'https://www.youtube.com/@BrandStore19'} target='_blank'>
+                            <Link href={'https://www.youtube.com/@ToeToys'} target='_blank'>
                                 <i className="icon-youtube text-black"></i>
                             </Link>
                             {/* <Link href={'https://twitter.com/'} target='_blank'>
