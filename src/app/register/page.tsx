@@ -118,6 +118,7 @@ import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
 import axios from 'axios';
+import { useRouter } from 'next/navigation'
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -126,6 +127,7 @@ const Register = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -152,6 +154,7 @@ const Register = () => {
             localStorage.setItem('authToken', token);
 
             setSuccess('Registration successful!');
+            router.push('/login');
 
             // Optionally, redirect to the homepage or user dashboard
             // router.push('/'); // Uncomment if you want to redirect
@@ -235,11 +238,12 @@ const Register = () => {
                                         <Icon.CheckSquare size={20} weight='fill' className='icon-checkbox' />
                                     </div>
                                     <label htmlFor='remember' className="pl-2 cursor-pointer text-secondary2">I agree to the
-                                        <Link href={'#!'} className='text-black hover:underline pl-1'>Terms of User</Link>
+                                        <Link href={'#!'} className='text-black hover:underline pl-1'>Terms & Conditions</Link>
                                     </label>
-                                    <div className="block-button md:mt-7 mt-4">
-                                    <button className="button-main" type="submit">Register123</button>
+
                                 </div>
+                                <div className="block-button md:mt-7 mt-4">
+                                    <button className="button-main bg-[#1F1F1F]" type="submit">Register</button>
                                 </div>
                                 
                             </form>
