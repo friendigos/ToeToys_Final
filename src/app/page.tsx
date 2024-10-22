@@ -8,7 +8,7 @@ import Collection from '@/components/Jewelry/Collection'
 import Lookbook from '@/components/Jewelry/Lookbook'
 import productData from '@/data/Product.json'
 import TabFeatures from '@/components/Jewelry/TabFeatures'
-import FeaturedProduct from '@/components/Jewelry/FeaturedProduct'
+import FeaturedProduct from '@/components/Toys/FeaturedProduct'
 import Newsletter from '@/components/Home4/Newsletter'
 import Benefit from '@/components/Jewelry/Benefit'
 import Instagram from '@/components/Jewelry/Instagram'
@@ -18,6 +18,8 @@ import ModalNewsletter from '@/components/Modal/ModalNewsletter'
 import FlashSale from '@/components/Furniture/FlashSale'
 import CommunityStory from '@/components/Cosmetic1/CommunityStory'
 import AdsPhoto from '@/components/Cosmetic1/AdsPhoto'
+import LookBook from '@/components/Cosmetic1/LookBook'
+import WeekProduct from '@/components/Toys/WeekProduct'
 
 export default function Home() {
   return (
@@ -31,9 +33,9 @@ export default function Home() {
             <Collection />
             <Lookbook />
             <Quote />
-            <FeaturedProduct data={productData} />
-            <TabFeatures data={productData} start={0} limit={20} />       
-            <FlashSale />
+            <LookBook data={productData} start={8} limit={12} />
+            <WeekProduct data={productData} start={0} limit={8} />
+            <FeaturedProduct data={productData} start={1} limit={6} />
             <AdsPhoto />
             <CommunityStory />
             {/* <Brand /> */}

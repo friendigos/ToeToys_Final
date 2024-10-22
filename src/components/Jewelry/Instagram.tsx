@@ -14,8 +14,8 @@ const Instagram = () => {
             <div className="instagram-block md:pt-20 pt-10 instagram_bg">
                 <div className="container">
                     <div className="heading">
-                        <div className="heading3 text-center">BrandStore19 On YouTube</div>
-                        <div className="text-center mt-3">#BrandStore19Sneaks</div>
+                        <div className="heading3 text-center">ToeToys On YouTube</div>
+                        <div className="text-center mt-3">#ToeToysSneaks</div>
                     </div>
                 </div>
                 <div className="list-instagram mt-7">
