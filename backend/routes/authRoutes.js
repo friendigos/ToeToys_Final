@@ -2,7 +2,16 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { register, login, requestOTP, verifyOTP, forgotPassword, resetPassword } = require('../controllers/authController');
+const { 
+  register, 
+  login, 
+  requestOTP, 
+  verifyOTP, 
+  forgotPassword, 
+  resetPassword,
+  requestEmailOTP,
+  verifyEmailOTP
+} = require('../controllers/authController');
 
 // Registration and Login
 router.post('/register', register);

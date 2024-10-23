@@ -171,3 +171,68 @@ exports.resetPassword = async (req, res) => {
     res.status(500).send('Server error');
   }
 };
+
+exports.requestEmailOTP = async (req, res) => {
+  const { email } = req.body;
+  try {
+    // Validate email (basic validation)
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ msg: 'Invalid email address' });
+    }
+
+    // Generate OTP
+    const otp = generateOTP();
+
+    // Store OTP with expiration (e.g., 10 minutes)
+    otpStore[email] = { otp, expiresAt: Date.now() + 10 * 60 * 1000 };
+
+    // Send OTP via email
+    const message = `Your OTP is: ${otp}. It will expire in 10 minutes.`;
+    await sendEmail({
+      email: email,
+      subject: 'Your OTP for Authentication',
+      message
+    });
+
+    res.json({ msg: 'OTP sent successfully to your email' });
+  } catch (error) {
+    console.error('Request Email OTP Error:', error.message);
+    res.status(500).send('Server error');
+  }
+};
+
+exports.verifyEmailOTP = async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    // Check if OTP exists for the email
+    const record = otpStore[email];
+    if (!record) return res.status(400).json({ msg: 'OTP not requested' });
+
+    // Check if OTP is expired
+    if (Date.now() > record.expiresAt) {
+      delete otpStore[email];
+      return res.status(400).json({ msg: 'OTP expired' });
+    }
+
+    // Check if OTP matches
+    if (record.otp !== otp) return res.status(400).json({ msg: 'Invalid OTP' });
+
+    // OTP is valid, delete it
+    delete otpStore[email];
+
+    // Find or create user
+    let user = await User.findOne({ email });
+    if (!user) {
+      user = new User({ email });
+      await user.save();
+    }
+
+    // Generate JWT
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+    res.json({ token });
+  } catch (error) {
+    console.error('Verify Email OTP Error:', error.message);
+    res.status(500).send('Server error');
+  }
+};
