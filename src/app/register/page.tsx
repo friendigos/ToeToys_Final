@@ -134,38 +134,43 @@ const Register = () => {
         setError('');
         setSuccess('');
 
-        // Check if passwords match
+        // Validate input fields
+        if (!name.trim() || !email.trim() || !password || !confirmPassword) {
+            setError("All fields are required.");
+            return;
+        }
+
         if (password !== confirmPassword) {
             setError("Passwords do not match.");
             return;
         }
 
+        if (password.length < 8) {
+            setError("Password must be at least 8 characters long.");
+            return;
+        }
+
         try {
             const response = await axios.post('http://localhost:5000/api/auth/register', {
-                name,
-                email,
+                name: name.trim(),
+                email: email.trim(),
                 password,
             });
 
-            // Assuming the response contains a token
-            const { token } = response.data;
-
-            // Store the token (e.g., in localStorage)
-            localStorage.setItem('authToken', token);
-
-            setSuccess('Registration successful!');
-            router.push('/login');
-
-            // Optionally, redirect to the homepage or user dashboard
-            // router.push('/'); // Uncomment if you want to redirect
-        } catch (err: unknown) {
-            // Check if the error has a response property
-            if (axios.isAxiosError(err)) {
-                // Accessing the error response
-                setError(err.response?.data?.message || 'An error occurred');
+            if (response.data && response.data.token) {
+                localStorage.setItem('authToken', response.data.token);
+                setSuccess('Registration successful!');
+                setTimeout(() => router.push('/login'), 1500); // Delay redirect to show success message
             } else {
-                setError('An unexpected error occurred');
+                throw new Error('Invalid response from server');
             }
+        } catch (err) {
+            if (axios.isAxiosError(err)) {
+                setError(err.response?.data?.message || 'Registration failed. Please try again.');
+            } else {
+                setError('An unexpected error occurred. Please try again later.');
+            }
+            console.error('Registration error:', err);
         }
     };
 
