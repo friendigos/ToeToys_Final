@@ -1,22 +1,21 @@
-// controllers/cartController.js
 const User = require('../models/User');
 const Product = require('../models/Product');
 
 exports.addToCart = async (req, res) => {
   const { productId, quantity } = req.body;
   try {
-    const product = await Product.findById(productId);
-    if (!product) return res.status(404).json({ msg: 'Product not found' });
-
     const user = await User.findById(req.user.id);
+    const product = await Product.findById(productId);
 
-    const itemIndex = user.cart.findIndex(item => item.product.toString() === productId);
+    if (!product) {
+      return res.status(404).json({ msg: 'Product not found' });
+    }
 
-    if (itemIndex > -1) {
-      // Update quantity
-      user.cart[itemIndex].quantity += quantity;
+    const cartItemIndex = user.cart.findIndex(item => item.product.toString() === productId);
+
+    if (cartItemIndex > -1) {
+      user.cart[cartItemIndex].quantity += quantity;
     } else {
-      // Add new item
       user.cart.push({ product: productId, quantity });
     }
 
@@ -39,15 +38,17 @@ exports.getCart = async (req, res) => {
 };
 
 exports.updateCartItem = async (req, res) => {
-  const { quantity } = req.body;
   const { itemId } = req.params;
+  const { quantity } = req.body;
   try {
     const user = await User.findById(req.user.id);
+    const cartItem = user.cart.id(itemId);
 
-    const item = user.cart.id(itemId);
-    if (!item) return res.status(404).json({ msg: 'Cart item not found' });
+    if (!cartItem) {
+      return res.status(404).json({ msg: 'Cart item not found' });
+    }
 
-    item.quantity = quantity;
+    cartItem.quantity = quantity;
     await user.save();
     res.json(user.cart);
   } catch (error) {
@@ -60,10 +61,7 @@ exports.removeFromCart = async (req, res) => {
   const { itemId } = req.params;
   try {
     const user = await User.findById(req.user.id);
-    const item = user.cart.id(itemId);
-    if (!item) return res.status(404).json({ msg: 'Cart item not found' });
-
-    item.remove();
+    user.cart = user.cart.filter(item => item._id.toString() !== itemId);
     await user.save();
     res.json(user.cart);
   } catch (error) {

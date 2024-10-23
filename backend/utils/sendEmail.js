@@ -8,19 +8,19 @@ const transporter = nodemailer.createTransport({
   }
 });
 
-exports.sendOTP = async (email, otp) => {
+exports.sendOrderStatusEmail = async (email, orderId, status) => {
   const mailOptions = {
     from: process.env.EMAIL_USER,
     to: email,
-    subject: 'Your OTP for Authentication',
-    text: `Your OTP is: ${otp}. It will expire in 10 minutes.`
+    subject: `Order ${orderId} ${status}`,
+    text: `Your order ${orderId} has been ${status}. Thank you for your purchase!`
   };
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log('OTP sent successfully');
+    console.log('Order status email sent successfully');
   } catch (error) {
-    console.error('Error sending OTP:', error);
+    console.error('Error sending order status email:', error);
     throw error;
   }
 };

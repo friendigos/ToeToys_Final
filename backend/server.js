@@ -6,6 +6,7 @@ const passport = require('passport');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
+const adminRoutes = require('./routes/adminRoutes');
 
 // Load environment variables
 dotenv.config();
@@ -37,6 +38,7 @@ app.use('/api/cart', require('./routes/cartRoutes'));
 app.use('/api/wishlist', require('./routes/wishlistRoutes'));
 app.use('/api/orders', require('./routes/orderRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
+app.use('/api/admin', adminRoutes);
 
 // Error Handling Middleware
 const { errorHandler } = require('./middlewares/errorHandler');

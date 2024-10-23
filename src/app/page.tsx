@@ -38,7 +38,7 @@ export default function Home() {
             <FeaturedProduct data={productData} start={1} limit={6} />
             <AdsPhoto />
             <CommunityStory />
-            {/* <Brand /> */}
+            <Brand />
             <Footer />
             <ModalNewsletter />
         </>

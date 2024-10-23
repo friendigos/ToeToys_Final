@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const { register, login, requestOTP, verifyOTP } = require('../controllers/authController');
+const { register, login, requestOTP, verifyOTP, forgotPassword, resetPassword } = require('../controllers/authController');
 
 // Registration and Login
 router.post('/register', register);
@@ -19,5 +19,11 @@ router.get('/google/callback', passport.authenticate('google', { session: false 
 // Phone Authentication
 router.post('/phone/request-otp', requestOTP);
 router.post('/phone/verify-otp', verifyOTP);
+
+router.post('/email/request-otp', requestEmailOTP);
+router.post('/email/verify-otp', verifyEmailOTP);
+
+router.post('/forgotpassword', forgotPassword);
+router.put('/resetpassword/:resettoken', resetPassword);
 
 module.exports = router;
