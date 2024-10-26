@@ -1,7 +1,10 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '@/store/store'
+import { login } from '@/store/slices/authSlice'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
 import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
@@ -12,40 +15,19 @@ const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [rememberMe, setRememberMe] = useState(false)
-    const [error, setError] = useState('')
     const router = useRouter()
+    const dispatch = useDispatch<AppDispatch>()
+    const { isAuthenticated, loading, error } = useSelector((state: RootState) => state.auth)
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/')
+        }
+    }, [isAuthenticated, router])
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
-        setError('')
-
-        try {
-            const response = await fetch('http://localhost:5000/api/auth/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email, password }),
-            })
-
-            const data = await response.json()
-
-            if (response.ok) {
-                // Login successful
-                localStorage.setItem('token', data.token)
-                if (rememberMe) {
-                    localStorage.setItem('email', email)
-                } else {
-                    localStorage.removeItem('email')
-                }
-                router.push('/dashboard') // Redirect to dashboard or home page
-            } else {
-                // Login failed
-                setError(data.msg || 'Login failed. Please try again.')
-            }
-        } catch (err) {
-            setError('An error occurred. Please try again later.')
-        }
+        dispatch(login({ email, password }))
     }
 
     return (
@@ -101,7 +83,9 @@ const Login = () => {
                                     <Link href={'/forgot-password'} className='font-semibold hover:underline'>Forgot Your Password?</Link>
                                 </div>
                                 <div className="block-button md:mt-7 mt-4">
-                                    <button type="submit" className="button-main">Login</button>
+                                    <button type="submit" className="button-main bg-[#1f1f1f]" disabled={loading}>
+                                        {loading ? 'Logging in...' : 'Login'}
+                                    </button>
                                 </div>
                             </form>
                         </div>

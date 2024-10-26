@@ -14,6 +14,9 @@ import { useModalWishlistContext } from '@/context/ModalWishlistContext';
 import { useModalSearchContext } from '@/context/ModalSearchContext';
 import { useCart } from '@/context/CartContext';
 import { useRouter } from 'next/navigation'
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '@/store/store';
+import { logout } from '@/store/slices/authSlice';
 
 interface Props {
     props: string
@@ -30,6 +33,8 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
     const { openModalSearch } = useModalSearchContext()
     const [searchKeyword, setSearchKeyword] = useState('');
     const router = useRouter()
+    const dispatch = useDispatch<AppDispatch>();
+    const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
     const handleSearch = (value: string) => {
         router.push(`/search-result?query=${value}`)
@@ -71,6 +76,11 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
         router.push(`/shop/breadcrumb1?type=${type}`);
     };
 
+    const handleLogout = () => {
+        dispatch(logout());
+        handleLoginPopup();
+    };
+
     return (
         <>
             <div className={`header-menu style-one ${fixedHeader ? ' fixed' : 'relative'} w-full md:h-[74px] h-[56px] ${props}`}>
@@ -101,151 +111,6 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                         </div>
                         <div className="menu-main h-full xl:w-full flex items-center justify-center max-lg:hidden xl:absolute xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
                             <ul className='flex items-center gap-8 h-full'>
-                                {/* <li className='h-full relative'> */}
-                                    {/* <Link
-                                        href="#!"
-                                        className={`text-button-uppercase duration-300 h-full flex items-center justify-center gap-1 
-                                            ${pathname.includes('/homepages/') ? 'active' : ''}`}
-                                    >
-                                        Demo
-                                    </Link>
-                                    <div className="sub-menu absolute py-3 px-5 -left-10 w-max grid grid-cols-4 gap-5 bg-white rounded-b-xl">
-                                        <ul>
-                                            <li>
-                                                <Link href="/" className='text-secondary duration-300'>
-                                                    Home Fashion 1
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/homepages/fashion2"
-                                                    className={`text-secondary duration-300`}
-                                                >
-                                                    Home Fashion 2
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/homepages/fashion3"
-                                                    className={`text-secondary duration-300`}
-                                                >
-                                                    Home Fashion 3
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion4" className={`text-secondary duration-300 ${pathname === '/homepages/fashion4' ? 'active' : ''}`}>
-                                                    Home Fashion 4
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion5" className={`text-secondary duration-300 ${pathname === '/homepages/fashion5' ? 'active' : ''}`}>
-                                                    Home Fashion 5
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion6" className={`text-secondary duration-300 ${pathname === '/homepages/fashion6' ? 'active' : ''}`}>
-                                                    Home Fashion 6
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                        <ul>
-                                            <li>
-                                                <Link
-                                                    href="/homepages/fashion7"
-                                                    className={`text-secondary duration-300`}
-                                                >
-                                                    Home Fashion 7
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion8" className='text-secondary duration-300'>
-                                                    Home Fashion 8
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion9" className='text-secondary duration-300'>
-                                                    Home Fashion 9
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion10" className='text-secondary duration-300'>
-                                                    Home Fashion 10
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/fashion11" className='text-secondary duration-300'>
-                                                    Home Fashion 11
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/underwear" className={`text-secondary duration-300 ${pathname === '/homepages/underwear' ? 'active' : ''}`}>
-                                                    Home Underwear
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                        <ul>
-                                            <li>
-                                                <Link href="/homepages/cosmetic1" className={`text-secondary duration-300 ${pathname === '/homepages/cosmetic1' ? 'active' : ''}`}>
-                                                    Home Cosmetic 1
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/cosmetic2" className={`text-secondary duration-300 ${pathname === '/homepages/cosmetic2' ? 'active' : ''}`}>
-                                                    Home Cosmetic 2
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/cosmetic3" className={`text-secondary duration-300`}>
-                                                    Home Cosmetic 3
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/pet" className='text-secondary duration-300'>
-                                                    Home Pet Store
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/jewelry" className={`text-secondary duration-300 ${pathname === '/homepages/jewelry' ? 'active' : ''}`}>
-                                                    Home Jewelry
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/furniture" className={`text-secondary duration-300 ${pathname === '/homepages/furniture' ? 'active' : ''}`}>
-                                                    Home Furniture
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                        <ul>
-                                            <li>
-                                                <Link href="/homepages/watch" className={`text-secondary duration-300 ${pathname === '/homepages/watch' ? 'active' : ''}`}>
-                                                    Home Watch
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/toys" className={`text-secondary duration-300 ${pathname === '/homepages/toys' ? 'active' : ''}`}>
-                                                    Home Toys Kid
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/homepages/yoga"
-                                                    className={`text-secondary duration-300`}>
-                                                    Home Yoga
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/organic" className='text-secondary duration-300'>
-                                                    Home Organic
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/homepages/marketplace" className='text-secondary duration-300'>
-                                                    Home Marketplace
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div> */}
-                                {/* </li> */}
                                 <li className='h-full'>
                                     <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
                                         Features
@@ -480,25 +345,6 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                                         </ul>
                                                     </div>
                                                 </div>
-                                                {/* <div className="banner-ads-block pl-2.5 basis-1/3">
-                                                    <div className="banner-ads-item bg-linear rounded-2xl relative overflow-hidden cursor-pointer" onClick={() => handleCategoryClick('jewelry')}>
-                                                        <div className="text-content py-14 pl-8 relative z-[1]">
-                                                            <div className="text-button-uppercase text-white bg-red px-2 py-0.5 inline-block rounded-sm">Save $10</div>
-                                                            <div className="heading6 mt-2">Dive into Savings <br />on Cosmetic</div>
-                                                            <div className="body1 mt-3 text-secondary">
-                                                                Starting at <span className='text-red'>$59.99</span>
-                                                            </div>
-                                                            <div className="button-main mt-5">Shop Now</div>
-                                                        </div>
-                                                        <Image
-                                                            src={'/images/other/bg-feature-jewelry.png'}
-                                                            width={1000}
-                                                            height={800}
-                                                            alt='bg-img'
-                                                            className='absolute left-0 top-0 w-full h-full object-cover'
-                                                        />
-                                                    </div>
-                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -845,7 +691,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                                             <li>
                                                                 <Link
                                                                     href={'/product/one-scrolling'}
-                                                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === '/product/one-scrolling' ? 'active' : ''}`}
+                                                                    className={`link text-secondary duration-300 cursor-pointer ${pathname === '/product/one-scrolling' ? 'active'                                                                        : ''}`}
                                                                 >
                                                                     Products Grid 1 Scrolling
                                                                 </Link>
@@ -889,40 +735,6 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                         </div>
                                     </div>
                                 </li>
-                                {/* <li className='h-full relative'>
-                                    <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
-                                        Blog
-                                    </Link>
-                                    <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
-                                        <ul className='w-full'>
-                                            <li>
-                                                <Link href="/blog/default" className={`text-secondary duration-300 ${pathname === '/blog/default' ? 'active' : ''}`}>
-                                                    Blog Default
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/blog/list" className={`text-secondary duration-300 ${pathname === '/blog/list' ? 'active' : ''}`}>
-                                                    Blog List
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/blog/grid" className={`text-secondary duration-300 ${pathname === '/blog/grid' ? 'active' : ''}`}>
-                                                    Blog Grid
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/blog/detail1" className={`text-secondary duration-300 ${pathname === '/blog/detail1' ? 'active' : ''}`}>
-                                                    Blog Detail 1
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/blog/detail2" className={`text-secondary duration-300 ${pathname === '/blog/detail2' ? 'active' : ''}`}>
-                                                    Blog Detail 2
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </li> */}
                                 <li className='h-full relative'>
                                     <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
                                         Pages
@@ -977,10 +789,21 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                         className={`login-popup absolute top-[74px] w-[320px] p-7 rounded-xl bg-white box-shadow-small 
                                             ${openLoginPopup ? 'open' : ''}`}
                                     >
-                                        <Link href={'/login'} className="button-main w-full text-center">Login</Link>
-                                        <div className="text-secondary text-center mt-3 pb-4">Don’t have an account?
-                                            <Link href={'/register'} className='text-black pl-1 hover:underline'>Register</Link>
-                                        </div>
+                                        {isAuthenticated ? (
+                                            <>
+                                                <button onClick={handleLogout} className="button-main w-full text-center">Logout</button>
+                                                <div className="text-secondary text-center mt-3 pb-4">
+                                                    <Link href={'/account'} className='text-black hover:underline'>My Account</Link>
+                                                </div>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Link href={'/login'} className="button-main w-full text-center">Login</Link>
+                                                <div className="text-secondary text-center mt-3 pb-4">Don&apos;t have an account?
+                                                    <Link href={'/register'} className='text-black pl-1 hover:underline'>Register</Link>
+                                                </div>
+                                            </>
+                                        )}
                                         <div className="bottom pt-4 border-t border-line"></div>
                                         <Link href={'#!'} className='body1 hover:underline'>Support</Link>
                                     </div>
@@ -1455,8 +1278,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                                                         Shop Filter Options
                                                                     </Link>
                                                                 </li>
-                                                                <li>
-                                                                    <Link
+                                                                <li>                                                                    <Link
                                                                         href={'/shop/filter-dropdown'}
                                                                         className={`text-secondary duration-300 ${pathname === '/shop/filter-dropdown' ? 'active' : ''}`}
                                                                     >
