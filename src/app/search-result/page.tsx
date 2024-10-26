@@ -11,6 +11,7 @@ import productData from '@/data/Product.json'
 import Product from '@/components/Product/Product'
 import HandlePagination from '@/components/Other/HandlePagination'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
+import MenuJewelry from '@/components/Header/Menu/MenuJewelry'
 
 const SearchResult = () => {
     const [searchKeyword, setSearchKeyword] = useState<string>('');
@@ -89,9 +90,8 @@ const SearchResult = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
-                <MenuOne props="bg-transparent" />
+            <MenuJewelry props="bg-white" />
                 <Breadcrumb heading='Search Result' subHeading='Search Result' />
             </div>
             <div className="shop-product breadcrumb1 lg:py-20 md:py-14 py-10">

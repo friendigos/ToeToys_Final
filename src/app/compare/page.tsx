@@ -14,6 +14,7 @@ import { useCompare } from '@/context/CompareContext'
 import { useCart } from '@/context/CartContext'
 import { useModalCartContext } from '@/context/ModalCartContext'
 import Rate from '@/components/Other/Rate'
+import MenuJewelry from '@/components/Header/Menu/MenuJewelry'
 
 const Compare = () => {
     const { compareState } = useCompare();
@@ -32,9 +33,8 @@ const Compare = () => {
 
     return (
         <>
-            <TopNavOne props="style-one bg-black" slogan="New customers save 10% with the code GET10" />
             <div id="header" className='relative w-full'>
-                <MenuOne props="bg-transparent" />
+            <MenuJewelry props="bg-white" />
                 <Breadcrumb heading='Compare Products' subHeading='Compare Products' />
             </div>
             <div className="compare-block md:py-20 py-10">

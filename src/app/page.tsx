@@ -24,7 +24,6 @@ import WeekProduct from '@/components/Toys/WeekProduct'
 export default function Home() {
   return (
     <>
-            <TopNavThree props="style-three bg-white" />
             <div id="header" className='relative w-full'>
                 <MenuJewelry props="bg-white" />
                 <BannerTop props="bg-black py-3" textColor='text-white' bgLine='bg-white' />
