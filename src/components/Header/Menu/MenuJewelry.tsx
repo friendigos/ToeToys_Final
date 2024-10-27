@@ -83,7 +83,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
 
     return (
         <>
-            <div className={`header-menu style-one ${fixedHeader ? ' fixed' : 'relative'} w-full md:h-[74px] h-[56px] ${props}`}>
+            <div className={`header-menu style-one fixed ${fixedHeader ? ' fixed' : 'relative'} w-full md:h-[74px] h-[56px] ${props}`}>
                 <div className="container mx-auto h-full">
                     <div className="header-main flex items-center justify-between h-full">
                         <div className="menu-mobile-icon lg:hidden flex items-center" onClick={handleMenuMobile}>
