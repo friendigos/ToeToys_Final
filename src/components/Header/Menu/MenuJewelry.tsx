@@ -367,7 +367,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                             <>
                                                 <button onClick={handleLogout} className="button-main w-full text-center">Logout</button>
                                                 <div className="text-secondary text-center mt-3 pb-4">
-                                                    <Link href={'/account'} className='text-black hover:underline'>My Account</Link>
+                                                    <Link href={'/my-account'} className='text-black hover:underline'>My Account</Link>
                                                 </div>
                                             </>
                                         ) : (
