@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import TopNavOne from '@/components/Header/TopNav/TopNavOne'
-import MenuOne from '@/components/Header/Menu/MenuOne'
+// import MenuOne from '@/components/Header/Menu/MenuOne'
 import Breadcrumb from '@/components/Breadcrumb/Breadcrumb'
 import Footer from '@/components/Footer/Footer'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
@@ -72,7 +72,7 @@ const MyAccount = () => {
                                         <div className="phone-number">
                                             <input className="border-line px-4 pt-3 pb-3 w-full rounded-lg" id="phoneNumber" type="text" defaultValue={'(+12) 345 678 910'} placeholder="Phone number" required />
                                         </div>
-                                        <div className="col-span-full select-block">
+                                        {/* <div className="col-span-full select-block">
                                             <select className="border border-line px-4 py-3 w-full rounded-lg" id="region" name="region" defaultValue={'default'}>
                                                 <option value="default" disabled>Choose Country/Region</option>
                                                 <option value="India">India</option>
@@ -80,7 +80,7 @@ const MyAccount = () => {
                                                 <option value="Singapore">Singapore</option>
                                             </select>
                                             <Icon.CaretDown className='arrow-down' />
-                                        </div>
+                                        </div> */}
                                     </div>
                                     <div className="heading5 pb-4 lg:mt-10 mt-6">Change Password</div>
                                     <div className="pass">
