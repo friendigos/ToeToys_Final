@@ -24,18 +24,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <GlobalProvider>
-      <html lang="en">
+  return (<html lang="en">
         <body className={instrument.className}>
+    <GlobalProvider>
+      
           {children}
           <ModalCart serverTimeLeft={serverTimeLeft} />
           <ModalWishlist />
           <ModalSearch />
           <ModalQuickview />
           <ModalCompare />
-        </body>
-      </html>
+       
     </GlobalProvider>
+     </body>
+      </html>
   )
 }
