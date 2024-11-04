@@ -15,6 +15,7 @@ import { useModalQuickviewContext } from '@/context/ModalQuickviewContext'
 import { useRouter } from 'next/navigation'
 import Marquee from 'react-fast-marquee'
 import Rate from '../Other/Rate'
+import { useCartActions } from '@/hooks/useCartActions';
 
 interface ProductProps {
     data: ProductType
@@ -25,7 +26,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
     const [activeColor, setActiveColor] = useState<string>('')
     const [activeSize, setActiveSize] = useState<string>('')
     const [openQuickShop, setOpenQuickShop] = useState<boolean>(false)
-    const { addToCart, updateCart, cartState } = useCart();
+    // const { addToCart, updateCart, cartState } = useCart();
     const { openModalCart } = useModalCartContext()
     const { addToWishlist, removeFromWishlist, wishlistState } = useWishlist();
     const { openModalWishlist } = useModalWishlistContext()
@@ -33,6 +34,7 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
     const { openModalCompare } = useModalCompareContext()
     const { openQuickview } = useModalQuickviewContext()
     const router = useRouter()
+    const { addToCart } = useCartActions();
 
     const handleActiveColor = (item: string) => {
         setActiveColor(item)
@@ -42,14 +44,13 @@ const Product: React.FC<ProductProps> = ({ data, type }) => {
         setActiveSize(item)
     }
 
-    const handleAddToCart = () => {
-        if (!cartState.cartArray.find(item => item.id === data.id)) {
-            addToCart({ ...data });
-            updateCart(data.id, data.quantityPurchase, activeSize, activeColor)
-        } else {
-            updateCart(data.id, data.quantityPurchase, activeSize, activeColor)
+    const handleAddToCart = async () => {
+        try {
+            await addToCart(data);
+            openModalCart();
+        } catch (error) {
+            console.error('Failed to add to cart:', error);
         }
-        openModalCart()
     };
 
     const handleAddToWishlist = () => {
