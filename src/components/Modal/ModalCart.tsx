@@ -4,46 +4,97 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import productData from '@/data/Product.json'
-import { ProductType } from '@/type/ProductType';
 import { useModalCartContext } from '@/context/ModalCartContext'
-import { useCart } from '@/context/CartContext'
+import { useCartActions } from '@/hooks/useCartActions'
 import { countdownTime } from '@/store/countdownTime'
-import CountdownTimeType from '@/type/CountdownType';
+import { ProductType } from '@/type/ProductType';
+import productData from '@/data/Product.json';
+import axios from 'axios';
 
-const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) => {
-    const [timeLeft, setTimeLeft] = useState(serverTimeLeft);
+interface CartItem {
+    productId: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image: string;
+}
+
+const ModalCart = () => {
+    const [timeLeft, setTimeLeft] = useState(countdownTime());
+    const [activeTab, setActiveTab] = useState<string>('')
+    const { isModalOpen, closeModalCart } = useModalCartContext();
+    const { cart, addToCart, removeFromCart, loadCart } = useCartActions();
+    const [recommendedProducts, setRecommendedProducts] = useState<ProductType[]>([]);
+
+    const handleActiveTab = (tab: string) => {
+        setActiveTab(tab === activeTab ? '' : tab);
+    };
+
+    const [note, setNote] = useState('');
+    const [selectedCountry, setSelectedCountry] = useState('');
+    const [selectedState, setSelectedState] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [couponCode, setCouponCode] = useState('');
 
     useEffect(() => {
-        const timer = setInterval(() => {
-            setTimeLeft(countdownTime());
-        }, 1000);
+        if (isModalOpen) {
+            loadCart();
+        }
+    }, [isModalOpen]);
 
-        return () => clearInterval(timer);
-    }, []);
+    useEffect(() => {
+        let timer: NodeJS.Timeout;
+        
+        if (isModalOpen) {
+            timer = setInterval(() => {
+                setTimeLeft(countdownTime());
+            }, 1000);
+        }
 
-    const [activeTab, setActiveTab] = useState<string | undefined>('')
-    const { isModalOpen, closeModalCart } = useModalCartContext();
-    const { cartState, addToCart, removeFromCart, updateCart } = useCart()
+        return () => {
+            if (timer) {
+                clearInterval(timer);
+            }
+        };
+    }, [isModalOpen]);
 
-    const handleAddToCart = (productItem: ProductType) => {
-        if (!cartState.cartArray.find(item => item.id === productItem.id)) {
-            addToCart({ ...productItem });
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
-        } else {
-            updateCart(productItem.id, productItem.quantityPurchase, '', '')
+    useEffect(() => {
+        const fetchRecommendedProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/products');
+                setRecommendedProducts(response.data.slice(0, 4));
+            } catch (error) {
+                console.error('Failed to fetch recommended products:', error);
+                setRecommendedProducts(productData.slice(0, 4));
+            }
+        };
+
+        if (isModalOpen) {
+            fetchRecommendedProducts();
+        }
+    }, [isModalOpen]);
+
+    const handleAddToCart = async (product: ProductType) => {
+        try {
+            await addToCart(product);
+        } catch (error) {
+            if (error === 'Please login to add items to cart') {
+                console.log('Please login to add items to cart');
+            }
         }
     };
 
-    const handleActiveTab = (tab: string) => {
-        setActiveTab(tab)
-    }
-
     let moneyForFreeship = 150;
-    let [totalCart, setTotalCart] = useState<number>(0)
-    let [discountCart, setDiscountCart] = useState<number>(0)
+    const totalCart = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const shipCart = totalCart > moneyForFreeship ? 0 : 30;
 
-    cartState.cartArray.map(item => totalCart += item.price * item.quantity)
+    const handleRemoveFromCart = async (productId: string) => {
+        try {
+            await removeFromCart(productId);
+        } catch (error) {
+            console.error('Failed to remove item:', error);
+        }
+    };
 
     return (
         <>
@@ -55,12 +106,12 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
                     <div className="left w-1/2 border-r border-line py-6 max-md:hidden">
                         <div className="heading5 px-6 pb-3">You May Also Like</div>
                         <div className="list px-6">
-                            {productData.slice(0, 4).map((product) => (
+                            {recommendedProducts.map((product) => (
                                 <div key={product.id} className='item py-5 flex items-center justify-between gap-3 border-b border-line'>
                                     <div className="infor flex items-center gap-5">
                                         <div className="bg-img">
                                             <Image
-                                                src={product.images[0]}
+                                                src={product.images?.[0] || product.thumbImage?.[0]}
                                                 width={300}
                                                 height={300}
                                                 alt={product.name}
@@ -71,7 +122,9 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
                                             <div className="name text-button">{product.name}</div>
                                             <div className="flex items-center gap-2 mt-2">
                                                 <div className="product-price text-title">${product.price}.00</div>
-                                                <div className="product-origin-price text-title text-secondary2"><del>${product.originPrice}.00</del></div>
+                                                <div className="product-origin-price text-title text-secondary2">
+                                                    <del>${product.originPrice}.00</del>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -90,7 +143,7 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
                     </div>
                     <div className="right cart-block md:w-1/2 w-full py-6 relative overflow-hidden">
                         <div className="heading px-6 pb-3 flex items-center justify-between relative">
-                            <div className="heading5">Shopping Cart</div>
+                            <div className="heading5">Shopping Cart ({cart.items.length})</div>
                             <div
                                 className="close-btn absolute right-6 top-0 w-6 h-6 rounded-full bg-surface flex items-center justify-center duration-300 cursor-pointer hover:bg-black hover:text-white"
                                 onClick={closeModalCart}
@@ -118,35 +171,27 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
                             </div>
                         </div>
                         <div className="list-product px-6">
-                            {cartState.cartArray.map((product) => (
-                                <div key={product.id} className='item py-5 flex items-center justify-between gap-3 border-b border-line'>
-                                    <div className="infor flex items-center gap-3 w-full">
-                                        <div className="bg-img w-[100px] aspect-square flex-shrink-0 rounded-lg overflow-hidden">
-                                            <Image
-                                                src={product.images[0]}
-                                                width={300}
-                                                height={300}
-                                                alt={product.name}
-                                                className='w-full h-full'
-                                            />
-                                        </div>
-                                        <div className='w-full'>
-                                            <div className="flex items-center justify-between w-full">
-                                                <div className="name text-button">{product.name}</div>
-                                                <div
-                                                    className="remove-cart-btn caption1 font-semibold text-red underline cursor-pointer"
-                                                    onClick={() => removeFromCart(product.id)}
-                                                >
-                                                    Remove
-                                                </div>
-                                            </div>
-                                            <div className="flex items-center justify-between gap-2 mt-3 w-full">
-                                                <div className="flex items-center text-secondary2 capitalize">
-                                                    {product.selectedSize || product.sizes[0]}/{product.selectedColor || product.variation[0].color}
-                                                </div>
-                                                <div className="product-price text-title">${product.price}.00</div>
+                            {cart.items.map((item: CartItem) => (
+                                <div key={item.productId} className="item py-5 flex items-center justify-between gap-3 border-b border-line">
+                                    <div className="infor flex items-center gap-5">
+                                        <Image
+                                            src={item.image}
+                                            width={100}
+                                            height={100}
+                                            alt={item.name}
+                                            className='w-[100px] aspect-square flex-shrink-0 rounded-lg'
+                                        />
+                                        <div>
+                                            <div className="name text-button">{item.name}</div>
+                                            <div className="flex items-center gap-2 mt-2">
+                                                <div className="product-price text-title">${item.price}.00</div>
+                                                <div className="quantity">x{item.quantity}</div>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div className="remove-cart-btn cursor-pointer"
+                                        onClick={() => handleRemoveFromCart(item.productId)}>
+                                        <Icon.X size={20} />
                                     </div>
                                 </div>
                             ))}
@@ -206,7 +251,15 @@ const ModalCart = ({ serverTimeLeft }: { serverTimeLeft: CountdownTimeType }) =>
                                     </div>
                                 </div>
                                 <div className="form pt-4 px-6">
-                                    <textarea name="form-note" id="form-note" rows={4} placeholder='Add special instructions for your order...' className='caption1 py-3 px-4 bg-surface border-line rounded-md w-full'></textarea>
+                                    <textarea 
+                                        name="form-note" 
+                                        id="form-note" 
+                                        rows={4} 
+                                        value={note}
+                                        onChange={(e) => setNote(e.target.value)}
+                                        placeholder='Add special instructions for your order...' 
+                                        className='caption1 py-3 px-4 bg-surface border-line rounded-md w-full'
+                                    ></textarea>
                                 </div>
                                 <div className="block-button text-center pt-4 px-6 pb-6">
                                     <div className='button-main w-full text-center' onClick={() => setActiveTab('')}>Save</div>
