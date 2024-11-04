@@ -1,7 +1,15 @@
 // models/Product.js
 const mongoose = require('mongoose');
 
-const ProductSchema = new mongoose.Schema({
+const variationSchema = new mongoose.Schema({
+    color: String,
+    colorCode: String,
+    colorImage: String,
+    image: String
+});
+
+const productSchema = new mongoose.Schema({
+    id: String,
     category: String,
     type: String,
     name: String,
@@ -16,14 +24,7 @@ const ProductSchema = new mongoose.Schema({
     quantity: Number,
     quantityPurchase: Number,
     sizes: [String],
-    variation: [
-        {
-            color: String,
-            colorCode: String,
-            colorImage: String,
-            image: String
-        }
-    ],
+    variation: [variationSchema],
     thumbImage: [String],
     images: [String],
     description: String,
@@ -31,4 +32,4 @@ const ProductSchema = new mongoose.Schema({
     slug: String
 });
 
-module.exports = mongoose.model('Product', ProductSchema);
+module.exports = mongoose.model('Product', productSchema);

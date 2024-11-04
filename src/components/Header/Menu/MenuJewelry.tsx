@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import * as Icon from "@phosphor-icons/react/dist/ssr";
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Product from '@/components/Product/Product';
 import productData from '@/data/Product.json'
 import useLoginPopup from '@/store/useLoginPopup';
@@ -12,14 +12,12 @@ import useMenuMobile from '@/store/useMenuMobile';
 import { useModalCartContext } from '@/context/ModalCartContext';
 import { useModalWishlistContext } from '@/context/ModalWishlistContext';
 import { useModalSearchContext } from '@/context/ModalSearchContext';
-import { useCart } from '@/context/CartContext';
-import { useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/store/store';
 import { logout } from '@/store/slices/authSlice';
 
 interface Props {
-    props: string
+    props?: string
 }
 
 const MenuJewelry: React.FC<Props> = ({ props }) => {
@@ -28,12 +26,12 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
     const { openMenuMobile, handleMenuMobile } = useMenuMobile()
     const [openSubNavMobile, setOpenSubNavMobile] = useState<number | null>(null)
     const { openModalCart } = useModalCartContext()
-    const { cartState } = useCart()
     const { openModalWishlist } = useModalWishlistContext()
     const { openModalSearch } = useModalSearchContext()
     const [searchKeyword, setSearchKeyword] = useState('');
     const router = useRouter()
     const dispatch = useDispatch<AppDispatch>();
+    const cart = useSelector((state: RootState) => state.cart);
     const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
 
     const handleSearch = (value: string) => {
@@ -78,8 +76,11 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
 
     const handleLogout = () => {
         dispatch(logout());
-        handleLoginPopup();
+        router.push('/login');
     };
+
+    // Calculate total quantity of all items
+    const totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
 
     return (
         <>
@@ -387,7 +388,9 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                 </div>
                                 <div className="cart-icon flex items-center relative cursor-pointer" onClick={openModalCart}>
                                     <Icon.Handbag size={24} color='black' />
-                                    <span className="quantity cart-quantity absolute -right-1.5 -top-1.5 text-xs text-white bg-black w-4 h-4 flex items-center justify-center rounded-full">{cartState.cartArray.length}</span>
+                                    <span className="quantity cart-quantity absolute -right-1.5 -top-1.5 text-xs text-white bg-black w-4 h-4 flex items-center justify-center rounded-full">
+                                        {totalQuantity}
+                                    </span>
                                 </div>
                             </div>
                         </div>

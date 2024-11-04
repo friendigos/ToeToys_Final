@@ -1,7 +1,18 @@
 // models/User.js
 const mongoose = require('mongoose');
 
-const UserSchema = new mongoose.Schema({
+const cartItemSchema = new mongoose.Schema({
+    productId: String,
+    quantity: Number,
+    selectedSize: String,
+    selectedColor: String,
+    price: Number,
+    name: String,
+    image: String,
+    brand: String
+});
+
+const userSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -30,10 +41,7 @@ const UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Product',
   }],
-  cart: [{
-    product: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
-    quantity: { type: Number, default: 1 },
-  }],
+  cart: [cartItemSchema],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -45,4 +53,4 @@ const UserSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', userSchema);
