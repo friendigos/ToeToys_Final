@@ -85,7 +85,7 @@ const ModalCart = () => {
     };
 
     let moneyForFreeship = 150;
-    const totalCart = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalCart = cart.items.reduce((sum: number, item: CartItem) => sum + item.price * item.quantity, 0);
     const shipCart = totalCart > moneyForFreeship ? 0 : 30;
 
     const handleRemoveFromCart = async (productId: string) => {
