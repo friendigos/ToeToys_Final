@@ -20,6 +20,14 @@ interface Props {
     props?: string
 }
 
+interface CartItem {
+    productId: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image: string;
+}
+
 const MenuJewelry: React.FC<Props> = ({ props }) => {
     const pathname = usePathname()
     const { openLoginPopup, handleLoginPopup } = useLoginPopup()
@@ -80,7 +88,7 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
     };
 
     // Calculate total quantity of all items
-    const totalQuantity = cart.items.reduce((total, item) => total + item.quantity, 0);
+    const totalQuantity = cart.items.reduce((total: number, item: CartItem) => total + item.quantity, 0);
 
     return (
         <>

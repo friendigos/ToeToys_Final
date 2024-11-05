@@ -1,11 +1,11 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import MenuJewelry from '@/components/Header/Menu/MenuJewelry'
 import BannerTop from '@/components/Home3/BannerTop'
 import SliderJewelry from '@/components/Slider/SliderJewelry'
 import Quote from '@/components/Jewelry/Quote'
 import Collection from '@/components/Jewelry/Collection'
 import Lookbook from '@/components/Jewelry/Lookbook'
-import productData from '@/data/Product.json'
 import TabFeatures from '@/components/Jewelry/TabFeatures'
 import FeaturedProduct from '@/components/Toys/FeaturedProduct'
 import Benefit from '@/components/Jewelry/Benefit'
@@ -17,10 +17,35 @@ import CommunityStory from '@/components/Cosmetic1/CommunityStory'
 import AdsPhoto from '@/components/Cosmetic1/AdsPhoto'
 import LookBook from '@/components/Cosmetic1/LookBook'
 import WeekProduct from '@/components/Toys/WeekProduct'
+import axios from 'axios'
+import { ProductType } from '@/type/ProductType'
 
 export default function Home() {
-  return (
-    <>
+    const [products, setProducts] = useState<ProductType[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/api/products');
+                setProducts(response.data);
+                setLoading(false);
+            } catch (error) {
+                console.error('Failed to fetch products:', error);
+                setError('Failed to load products');
+                setLoading(false);
+            }
+        };
+
+        fetchProducts();
+    }, []);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+
+    return (
+        <>
             <div id="header" className='relative w-full'>
                 <MenuJewelry props="bg-white" />
                 <BannerTop props="bg-black py-3" textColor='text-white' bgLine='bg-white' />
@@ -29,14 +54,14 @@ export default function Home() {
             <Collection />
             <Lookbook />
             <Quote />
-            <LookBook data={productData} start={8} limit={12} />
-            <WeekProduct data={productData} start={0} limit={8} />
-            <FeaturedProduct data={productData} start={1} limit={6} />
+            <LookBook data={products} start={8} limit={12} />
+            <WeekProduct data={products} start={0} limit={8} />
+            <FeaturedProduct data={products} start={1} limit={6} />
             <AdsPhoto />
             <CommunityStory />
             <Brand />
             <Footer />
             <ModalNewsletter />
         </>
-  )
+    )
 }
