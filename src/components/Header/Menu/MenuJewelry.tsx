@@ -120,49 +120,11 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                         </div>
                         <div className="menu-main h-full xl:w-full flex items-center justify-center max-lg:hidden xl:absolute xl:top-1/2 xl:left-1/2 xl:-translate-x-1/2 xl:-translate-y-1/2">
                             <ul className='flex items-center gap-8 h-full'>
-                                <li className='h-full relative'>
-                                    <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
-                                        Pages
+                            <li className='h-full'>
+                                    <Link href="/shop/default-grid" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname === '/shop/default-grid' ? 'active' : ''}`}>
+                                        Shop
                                     </Link>
-                                    <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
-                                        <ul className='w-full'>
-                                            <li>
-                                                <Link href="/pages/about" className={`text-secondary duration-300 ${pathname === '/pages/about' ? 'active' : ''}`}>
-                                                    About Us
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/contact" className={`text-secondary duration-300 ${pathname === '/pages/contact' ? 'active' : ''}`}>
-                                                    Contact Us
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/store-list" className={`text-secondary duration-300 ${pathname === '/pages/store-list' ? 'active' : ''}`}>
-                                                    Store List
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/page-not-found" className={`text-secondary duration-300 ${pathname === '/pages/page-not-found' ? 'active' : ''}`}>
-                                                    404
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/faqs" className={`text-secondary duration-300 ${pathname === '/pages/faqs' ? 'active' : ''}`}>
-                                                    FAQs
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/coming-soon" className={`text-secondary duration-300 ${pathname === '/pages/coming-soon' ? 'active' : ''}`}>
-                                                    Coming Soon
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/pages/customer-feedbacks" className={`text-secondary duration-300 ${pathname === '/pages/customer-feedbacks' ? 'active' : ''}`}>
-                                                    Customer Feedbacks
-                                                </Link>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    
                                 </li>
                                 <li className='h-full'>
                                     <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
@@ -349,19 +311,55 @@ const MenuJewelry: React.FC<Props> = ({ props }) => {
                                         ToeToys
                                     </Link>
                                 </li>
-                                
-                                <li className='h-full'>
-                                    <Link href="/shop/default-grid" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname === '/shop/default-grid' ? 'active' : ''}`}>
-                                        Shop
-                                    </Link>
-                                    
-                                </li>
-                                
                                 <li className='h-full'>
                                     <Link href="shop/collection" className={`text-button-uppercase duration-300 h-full flex items-center justify-center ${pathname === '/shop/default-grid' ? 'active' : ''}`}>
                                         Collection
                                     </Link>
                                 </li>
+                                <li className='h-full relative'>
+                                    <Link href="#!" className='text-button-uppercase duration-300 h-full flex items-center justify-center'>
+                                        Pages
+                                    </Link>
+                                    <div className="sub-menu py-3 px-5 -left-10 absolute bg-white rounded-b-xl">
+                                        <ul className='w-full'>
+                                            <li>
+                                                <Link href="/pages/about" className={`text-secondary duration-300 ${pathname === '/pages/about' ? 'active' : ''}`}>
+                                                    About Us
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/contact" className={`text-secondary duration-300 ${pathname === '/pages/contact' ? 'active' : ''}`}>
+                                                    Contact Us
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/store-list" className={`text-secondary duration-300 ${pathname === '/pages/store-list' ? 'active' : ''}`}>
+                                                    Store List
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/page-not-found" className={`text-secondary duration-300 ${pathname === '/pages/page-not-found' ? 'active' : ''}`}>
+                                                    404
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/faqs" className={`text-secondary duration-300 ${pathname === '/pages/faqs' ? 'active' : ''}`}>
+                                                    FAQs
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/coming-soon" className={`text-secondary duration-300 ${pathname === '/pages/coming-soon' ? 'active' : ''}`}>
+                                                    Coming Soon
+                                                </Link>
+                                            </li>
+                                            <li>
+                                                <Link href="/pages/customer-feedbacks" className={`text-secondary duration-300 ${pathname === '/pages/customer-feedbacks' ? 'active' : ''}`}>
+                                                    Customer Feedbacks
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </li>                                
                             </ul>
                         </div>
                         <div className="right flex gap-12 relative z-[1]">
